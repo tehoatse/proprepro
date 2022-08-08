@@ -1,35 +1,38 @@
 package proprepro
 
-func unsmartQuotes(s string) string {
+var singleQuote = '\u0027' // unicode character for single quote
 
-	singleQuote := '\u0027' // singleQuote unicode character, I think?
+func UnsmartQuotes(s string) string {
 	prose := []rune(s)
-
 	for i, char := range prose {
-		switch char {
-		case '“':
-			prose[i] = '"'
-		case '”':
-			prose[i] = '"'
-		case '‘':
-			prose[i] = singleQuote 
-		case '’':
-			prose[i] = singleQuote
+		prose[i] = removeSmartQuotes(char)
+	}
+	return string(prose)
+}
+
+func RemoveTabs(s string) string {
+	prose := []rune(s)
+	for i, char := range prose {
+		if char == '\t' {
+			prose = removeItem(prose, i)
 		}
 	}
 	return string(prose)
 }
 
-func removeTabs(s string) string {
-
-	prose := []rune(s)
-
-	for i, char := range prose {
-		if char == '\t' {
-			prose[i] = ' '
-		}
+func removeItem(items []rune, i int) []rune {
+	if i < 0 || i >= len(items) {
+		return items
 	}
+	return append(items[:i], items[i+1:]...)
+}
 
-	return string(prose)
-
+func removeSmartQuotes(char rune) rune {
+	if char == '“' || char == '”' {
+		return '"'
+	}
+	if char == '‘' || char == '’' {
+		return singleQuote
+	}
+	return char
 }
