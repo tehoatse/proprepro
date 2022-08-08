@@ -1,6 +1,6 @@
 package proprepro
 
-var singleQuote = '\u0027' // unicode character for single quote
+const singleQuote = '\u0027' // unicode character for single quote
 
 func UnsmartQuotes(s string) string {
 	prose := []rune(s)
